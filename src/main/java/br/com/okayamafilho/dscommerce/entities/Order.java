@@ -2,6 +2,7 @@ package br.com.okayamafilho.dscommerce.entities;
 
 import java.time.Instant;
 import jakarta.persistence.Table;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 @Entity
 @Table(name= "tb_order")
@@ -25,6 +27,21 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "client_id")
     private User client;
+
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Payament payament;
+
+    public Order() {
+
+    }
+  
+    public Order(Long id, Instant moment, OrderStatus status, User client, Payament payament) {
+        this.id = id;
+        this.moment = moment;
+        this.status = status;
+        this.client = client;
+        this.payament = payament;
+    }
 
     public Long getId() {
         return id;
@@ -56,6 +73,14 @@ public class Order {
 
     public void setClient(User client) {
         this.client = client;
+    }
+
+    public Payament getPayament() {
+        return payament;
+    }
+
+    public void setPayament(Payament payament) {
+        this.payament = payament;
     }     
 
 }
