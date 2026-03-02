@@ -1,9 +1,6 @@
 package br.com.okayamafilho.dscommerce.dto;
 
 import br.com.okayamafilho.dscommerce.entities.Product;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 
 public class ProductDTO {
 
@@ -23,6 +20,7 @@ public class ProductDTO {
         this.imgUrl = imgUrl;
     }
 
+    //Component para utilizar no sistema utilizando ModelMapper
     public ProductDTO(Product entity) {
         id = entity.getId();
         name = entity.getName();
