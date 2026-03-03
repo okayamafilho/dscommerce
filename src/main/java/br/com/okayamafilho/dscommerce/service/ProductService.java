@@ -1,15 +1,18 @@
 package br.com.okayamafilho.dscommerce.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.okayamafilho.dscommerce.dto.ProductDTO;
 import br.com.okayamafilho.dscommerce.entities.Product;
 import br.com.okayamafilho.dscommerce.repositories.ProductRepository;
-import br.com.okayamafilho.dscommerce.service.execptions.ResourceNotFoundException;
+import br.com.okayamafilho.dscommerce.service.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ProductService {
@@ -44,15 +47,27 @@ public class ProductService {
 
     @Transactional
     public ProductDTO update(Long id, ProductDTO dto) {
-        Product entity = repository.getReferenceById(id);
-        copyDtoToEntity(dto, entity);
-        entity = repository.save(entity);
-        return new ProductDTO(entity);      
+        try {
+            Product entity = repository.getReferenceById(id);
+            copyDtoToEntity(dto, entity);
+            entity = repository.save(entity);
+            return new ProductDTO(entity);      
+            
+        } catch (EntityNotFoundException e) {
+             throw new ResourceNotFoundException("Recurso não encontrado para atualizar");
+        }
+
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id) {
-        repository.deleteById(id);
+        if (!repository.existsById(id)) {
+            throw new ResourceNotFoundException("Recurso não encontrado para exclusão");
+        }try {
+            repository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new ResourceNotFoundException("Falha de integridade referencial");
+        }
     }
 
     private void copyDtoToEntity(ProductDTO dto, Product entity) {

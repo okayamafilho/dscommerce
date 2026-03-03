@@ -20,7 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import br.com.okayamafilho.dscommerce.dto.CustomError;
 import br.com.okayamafilho.dscommerce.dto.ProductDTO;
 import br.com.okayamafilho.dscommerce.service.ProductService;
-import br.com.okayamafilho.dscommerce.service.execptions.ResourceNotFoundException;
+import br.com.okayamafilho.dscommerce.service.exceptions.ResourceNotFoundException;
 
 @RestController
 @RequestMapping(value = "/products")
@@ -30,15 +30,9 @@ public class ProductController {
     private ProductService service;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
-        try {
+    public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
             ProductDTO dto = service.findById(id);      
             return ResponseEntity.ok(dto);
-        } catch (ResourceNotFoundException e) {
-            CustomError err = new CustomError(Instant.now(), 404, e.getMessage(), "caminho");
-            return ResponseEntity.status(404).body(err);
-        }
-
     }
 
     @GetMapping

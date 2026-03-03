@@ -1,4 +1,4 @@
-package br.com.okayamafilho.dscommerce.service.execptions;
+package br.com.okayamafilho.dscommerce.service.exceptions;
 
 public class ResourceNotFoundException extends RuntimeException {
 

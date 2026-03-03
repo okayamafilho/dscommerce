@@ -2,6 +2,7 @@ package br.com.okayamafilho.dscommerce.entities;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -45,5 +46,19 @@ public class Category {
     public Set<Product> getProducts() {
         return products;
     }
-    
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        Category category = (Category) obj;
+
+        return Objects.equals(id, category.id);
+    }
+
+        @Override
+        public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

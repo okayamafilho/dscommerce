@@ -1,5 +1,7 @@
 package br.com.okayamafilho.dscommerce.entities;
 
+import java.util.Objects;
+
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -57,4 +59,18 @@ public class OrderItem {
         this.price = price;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        OrderItem orderItem = (OrderItem) obj;
+
+        return Objects.equals(id, orderItem.id);
+    }
+
+        @Override
+        public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

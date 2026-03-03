@@ -1,6 +1,7 @@
 package br.com.okayamafilho.dscommerce.entities;
 
 import java.time.Instant;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -59,5 +60,21 @@ public class Payament {
     public void setOrder(Order order) {
         this.order = order;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        Payament payament = (Payament) obj;
+
+        return Objects.equals(id, payament.id);
+    }
+
+        @Override
+        public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
 
 }
