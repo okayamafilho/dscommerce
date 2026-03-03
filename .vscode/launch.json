@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "DscommerceApplication",
+            "request": "launch",
+            "mainClass": "br.com.okayamafilho.dscommerce.DscommerceApplication",
+            "projectName": ""
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-DscommerceApplication<dscommerce>",
             "request": "launch",
             "cwd": "${workspaceFolder}",

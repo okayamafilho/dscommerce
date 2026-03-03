@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.okayamafilho.dscommerce.dto.ProductDTO;
 import br.com.okayamafilho.dscommerce.entities.Product;
 import br.com.okayamafilho.dscommerce.repositories.ProductRepository;
+import br.com.okayamafilho.dscommerce.service.exceptions.DatabaseException;
 import br.com.okayamafilho.dscommerce.service.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 
@@ -42,7 +43,6 @@ public class ProductService {
         copyDtoToEntity(dto, entity);
         entity = repository.save(entity);
         return new ProductDTO(entity);
-      
     }
 
     @Transactional
@@ -56,7 +56,6 @@ public class ProductService {
         } catch (EntityNotFoundException e) {
              throw new ResourceNotFoundException("Recurso não encontrado para atualizar");
         }
-
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
@@ -66,7 +65,7 @@ public class ProductService {
         }try {
             repository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
-            throw new ResourceNotFoundException("Falha de integridade referencial");
+            throw new DatabaseException("Falha de integridade referencial");
         }
     }
 
@@ -76,6 +75,4 @@ public class ProductService {
         entity.setPrice(dto.getPrice());
         entity.setImgUrl(dto.getImgUrl());
     }
-
-
 }
